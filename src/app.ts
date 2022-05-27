@@ -30,6 +30,7 @@ class App {
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
+    this.initializeErrorMiddleware();
   }
 
   public listen() {
@@ -63,7 +64,6 @@ class App {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
     this.app.use(responseHelper);
-    this.app.use(errorMiddleware);
   }
 
   private initializeRoutes(routes: Routes[]) {
@@ -86,6 +86,10 @@ class App {
 
     const specs = swaggerJSDoc(options);
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+  }
+
+  private initializeErrorMiddleware() {
+    this.app.use(errorMiddleware);
   }
 }
 
