@@ -4,13 +4,14 @@ import { ApiException } from '@exceptions/ApiException';
 import { User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
+import { UserRepository } from '@/repositories/user/user.repository';
 
 class UserService {
   public users = userModel;
+  private userRepository: UserRepository = new UserRepository();
 
   public async findAllUser(): Promise<User[]> {
-    const users: User[] = await this.users.find();
-    return users;
+    return await this.userRepository.findAll();
   }
 
   public async findUserById(userId: string): Promise<User> {

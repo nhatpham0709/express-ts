@@ -13,5 +13,6 @@ declare namespace Express {
     conflict?: any;
     tooManyRequests?: any;
     serverError?: any;
+    badRequest?: any;
   }
 }

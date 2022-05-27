@@ -8,7 +8,22 @@ const errorMiddleware = (error: ApiException, req: Request, res: Response, next:
     const message: string = error.message || 'Something went wrong';
 
     logger.error(`[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}`);
-    res.status(status).json({ message });
+    switch (status) {
+      case 400:
+        res.badRequest(message);
+      case 401:
+        res.unauthorized(message);
+      case 403:
+        res.forbidden(message);
+      case 404:
+        res.notFound(message);
+      case 409:
+        res.conflict(message);
+      case 500:
+        res.serverError(message);
+      default:
+        res.serverError(message);
+    }
   } catch (error) {
     next(error);
   }

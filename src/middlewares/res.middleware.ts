@@ -46,14 +46,8 @@ const responseHelper = (req: Request, res: Response, next: NextFunction = null) 
     else res.json({ data: data, meta: { message: message, status: status } });
   };
 
-  res.fail = (message: String, status = 400, code = null) => {
-    const response = {
-      status: status,
-      error: code || status.toString(),
-      message: message,
-    };
-
-    res.success(response, status);
+  res.fail = (message: String, status = 400) => {
+    res.status(status).json({ message: message, status: status });
   };
 
   res.created = (data: any = null, message: String = '') => {
@@ -72,32 +66,32 @@ const responseHelper = (req: Request, res: Response, next: NextFunction = null) 
     res.success(null, responseCodes.NO_CONTENT);
   };
 
-  res.unauthorized = (description: String = 'Unauthorized', code = null) => {
-    res.fail(description, responseCodes.UNAUTHORIZED, code);
+  res.unauthorized = (description: String = 'Unauthorized') => {
+    res.fail(description, responseCodes.UNAUTHORIZED);
   };
 
-  res.forbidden = (description: String = 'Forbidden', code = null) => {
-    res.fail(description, responseCodes.FORBIDDEN, code);
+  res.forbidden = (description: String = 'Forbidden') => {
+    res.fail(description, responseCodes.FORBIDDEN);
   };
 
-  res.notFound = (description: String = 'Not Found', code = null) => {
-    res.fail(description, responseCodes.RESOURCE_NOT_FOUND, code);
+  res.notFound = (description: String = 'Not Found') => {
+    res.fail(description, responseCodes.RESOURCE_NOT_FOUND);
   };
 
-  res.validationError = (description: String = 'Bad Request', code = null) => {
-    res.fail(description, responseCodes.INVALID_DATA, code);
+  res.badRequest = (description: String = 'Bad Request') => {
+    res.fail(description, responseCodes.INVALID_DATA);
   };
 
-  res.conflict = (description: String = 'Conflict', code = null) => {
-    res.fail(description, responseCodes.CONFLICT, code);
+  res.conflict = (description: String = 'Conflict') => {
+    res.fail(description, responseCodes.CONFLICT);
   };
 
-  res.tooManyRequests = (description: String = 'Too Many Requests', code = null) => {
-    res.fail(description, responseCodes.TOO_MANY_REQUESTS, code);
+  res.tooManyRequests = (description: String = 'Too Many Requests') => {
+    res.fail(description, responseCodes.TOO_MANY_REQUESTS);
   };
 
-  res.serverError = (description: String = 'Internal Server Error', code = null) => {
-    res.fail(description, responseCodes.SERVER_ERROR, code);
+  res.serverError = (description: String = 'Internal Server Error') => {
+    res.fail(description, responseCodes.SERVER_ERROR);
   };
 
   if (next !== null) next();

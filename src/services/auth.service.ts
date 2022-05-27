@@ -14,11 +14,10 @@ class AuthService {
   private userRepository = new UserRepository();
 
   public async register(userData: CreateUserDto): Promise<User> {
-    const user = this.userRepository.findOneByEmail(userData.email);
-    if (user) throw new ApiException(409, `Your email ${userData.email} already exists`);
+    const user = await this.userRepository.findOneByEmail(userData.email);
+    if (user) throw new ApiException(400, `Your email ${userData.email} already exists`);
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await this.userRepository.create(userData.email, hashedPassword);
-
     return createUserData;
   }
 
