@@ -4,17 +4,21 @@ import { RequestWithUser } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import AuthService from '@services/auth.service';
 import UserResource from '@/transformers/users/user.resource';
+import { isEmpty } from 'class-validator';
 
 class AuthController {
-  public authService = new AuthService();
-  private userResource = new UserResource();
+  private authService: AuthService = new AuthService();
 
-  public signUp = async (req: Request, res: Response, next: NextFunction) => {
+  // constructor(authService: AuthService, userResource: UserResource) {
+  //   this.authService = authService;
+  //   this.userResource = userResource;
+  // }
+
+  public register = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: CreateUserDto = req.body;
-      const signUpUserData: User = await this.authService.signup(userData);
-
-      this.userResource.make({ data: signUpUserData, message: 'signup' });
+      const user: User = await this.authService.register(userData);
+      res.created(user);
     } catch (error) {
       next(error);
     }

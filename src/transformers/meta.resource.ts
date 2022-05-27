@@ -1,5 +1,5 @@
-import Resource from './resource';
+import { Resource } from './resource';
 
-class MetaResource extends Resource {}
+export class MetaResource extends Resource {
 
-export default MetaResource;
+}

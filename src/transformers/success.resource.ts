@@ -1,5 +1,8 @@
-import Resource from './resource';
+import { Response } from 'express';
+import { Resource } from './resource';
 
-class SuccessResource extends Resource {}
-
-export default SuccessResource;
+export class SuccessResource extends Resource {
+  constructor(public data: any, public message: string) {
+    super(data, 200, message);
+  }
+}

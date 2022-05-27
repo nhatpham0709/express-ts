@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { SECRET_KEY } from '@config';
-import { HttpException } from '@exceptions/HttpException';
+import { ApiException } from '@exceptions/ApiException';
 import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
 import userModel from '@models/users.model';
 
@@ -19,13 +19,13 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
         req.user = findUser;
         next();
       } else {
-        next(new HttpException(401, 'Wrong authentication token'));
+        next(new ApiException(401, 'Wrong authentication token'));
       }
     } else {
-      next(new HttpException(404, 'Authentication token missing'));
+      next(new ApiException(404, 'Authentication token missing'));
     }
   } catch (error) {
-    next(new HttpException(401, 'Wrong authentication token'));
+    next(new ApiException(401, 'Wrong authentication token'));
   }
 };
 

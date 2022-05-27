@@ -68,7 +68,7 @@ Modify `swagger.yaml` file to your source code.
 │   │   └── users.dto.ts
 │   │
 │   ├── /exceptions
-│   │   └── HttpException.ts
+│   │   └── ApiException.ts
 │   │
 │   ├── /http
 │   │   ├── auth.http

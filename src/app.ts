@@ -11,8 +11,10 @@ import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
 import { Routes } from '@interfaces/routes.interface';
-import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import errorMiddleware from './middlewares/error.middleware';
+
+const responseHelper = require('@middlewares/res.middleware').helper();
 
 class App {
   public app: express.Application;
@@ -28,7 +30,6 @@ class App {
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
-    this.initializeErrorHandling();
   }
 
   public listen() {
@@ -61,6 +62,8 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(responseHelper);
+    this.app.use(errorMiddleware);
   }
 
   private initializeRoutes(routes: Routes[]) {
@@ -83,10 +86,6 @@ class App {
 
     const specs = swaggerJSDoc(options);
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-  }
-
-  private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
   }
 }
 
