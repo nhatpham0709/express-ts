@@ -28,6 +28,8 @@ services:
     image: mongo:5.0.8-focal
     ports:
       - '${DB_EXTERNAL_PORT-27017}:27017'
+    volumes:
+      - data:/data/db
     networks:
       - backend
 

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
+import { ListResponse } from '@interfaces/pagination.interface';
 import userService from '@services/users.service';
 
 class UsersController {
@@ -8,8 +9,7 @@ class UsersController {
 
   public getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const users: User[] = await this.userService.findAllUser();
-
+      const users: ListResponse<User> = await this.userService.findAllUser(req);
       res.success(users);
     } catch (error) {
       next(error);

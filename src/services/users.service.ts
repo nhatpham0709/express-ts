@@ -5,13 +5,29 @@ import { User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
 import { UserRepository } from '@/repositories/user/user.repository';
+import { ListParams, ListResponse } from '@interfaces/pagination.interface';
+import { Request } from 'express';
 
 class UserService {
   public users = userModel;
   private userRepository: UserRepository = new UserRepository();
 
-  public async findAllUser(): Promise<User[]> {
-    return await this.userRepository.findAll();
+  public async findAllUser(req: Request): Promise<ListResponse<User>> {
+    const PAGE_LIMIT = 3;
+    const params: ListParams = {
+      page: +req.query.page || 0,
+      limit: PAGE_LIMIT,
+    };
+    const skip = params.page * PAGE_LIMIT;
+    const users: User[] = await this.userRepository.findAll().limit(params.limit).skip(skip);
+    return {
+      items: users,
+      pagination: {
+        page: params.page,
+        limit: params.limit,
+        total: users.length,
+      },
+    };
   }
 
   public async findUserById(userId: string): Promise<User> {
